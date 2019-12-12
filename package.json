@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "simple back-end for front-end",
   "repository": "https://github.com/oswish/barebones",
-  "main": "index.js",
+  "main": "bff.js",
   "engines": {
     "node": "10.15.3"
   },
   "scripts": {
-    "build": "rm -rf dist && parcel build src/index.html",
+    "build": "rm -rf dist && parcel build src/index.html && cp -rf dist public",
     "build:nvmrc": "echo $(node -p -e 'require(\"./package\").engines.node.split(\">=\").join(\"\")') > .nvmrc",
     "cypress:run": "./node_modules/.bin/cypress run",
     "cypress:open": "./node_modules/.bin/cypress open",
@@ -41,6 +41,8 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-security": "^1.4.0",
     "express": "^4.17.1",
+    "dotenv": "^8.2.0",
+    "node-fetch": "^2.6.0",
     "parcel-bundler": "^1.8.1",
     "prettier": "^1.19.1",
     "react": "^16.4.0",
