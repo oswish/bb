@@ -1,0 +1,10 @@
+.DS_Store
+dist/*
+node_modules/*
+cypress/integration/examples
+cypress/screenshots
+cypress/videos
+
+# Generated
+.cache/*
+.nvmrc

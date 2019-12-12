@@ -1,0 +1,4 @@
+{
+  "testFiles": "test/**/*",
+  "video": false
+}

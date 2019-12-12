@@ -1,0 +1,52 @@
+{
+  "name": "barebones",
+  "version": "1.0.0",
+  "description": "simple back-end for front-end",
+  "repository": "https://github.com/oswish/barebones",
+  "main": "index.js",
+  "engines": {
+    "node": "10.15.3"
+  },
+  "scripts": {
+    "build": "rm -rf dist && parcel build src/index.html",
+    "build:nvmrc": "echo $(node -p -e 'require(\"./package\").engines.node.split(\">=\").join(\"\")') > .nvmrc",
+    "cypress:run": "./node_modules/.bin/cypress run",
+    "cypress:open": "./node_modules/.bin/cypress open",
+    "lint": "eslint src",
+    "nuke": "rm -rf node_modules",
+    "pretty": "prettier --write '{src,cypress/integration/test}/**/*.js'",
+    "refresh": "npm run nuke; npm install",
+    "start": "node ./bff"
+  },
+  "author": "Brian Swisher",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "uniq": "^1.0.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "cypress": "^3.6.1",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-compat": "^3.3.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsdoc": "^18.0.1",
+    "eslint-plugin-lodash": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-security": "^1.4.0",
+    "express": "^4.17.1",
+    "parcel-bundler": "^1.8.1",
+    "prettier": "^1.19.1"
+  }
+}
