@@ -1,4 +1,4 @@
-# barebones
+# bb (barebones)
 
 ## Quick Start (requires NVM)
 
