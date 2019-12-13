@@ -11,7 +11,7 @@ const PM = () => {
   const [payload, setPayload] = useState();
 
   if (!payload) {
-    fetch(`${API_HOST}/pm`)
+    fetch(`${API_HOST}/poc`)
       .then(response => response.json())
       .then(data => {
         setPayload(data);
