@@ -17,20 +17,6 @@ app.use((req, res, next) => {
 
 app.set('json spaces', 2);
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
-
-app.set('json spaces', 2);
-
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
-
-app.set('json spaces', 2);
-
 app.use('/', express.static(path.join(__dirname, '..', 'dist')));
 
 app.get('/pm_g', (req, res) => {
