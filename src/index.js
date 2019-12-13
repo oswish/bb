@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const React = require('react');
 const ReactDOM = require('react-dom');
 
@@ -11,7 +9,9 @@ const PM = () => {
   const [payload, setPayload] = useState();
 
   if (!payload) {
-    fetch(`${API_HOST}/poc`)
+    const path = API_HOST.match('sheepda') && 'pm' || 'poc';
+
+    fetch(`${API_HOST}/${path}`)
       .then(response => response.json())
       .then(data => {
         setPayload(data);
