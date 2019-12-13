@@ -21,7 +21,6 @@
   "author": "Brian Swisher",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^8.2.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "uniq": "^1.0.1"
