@@ -9,7 +9,7 @@ const PM = () => {
   const [payload, setPayload] = useState();
 
   if (!payload) {
-    const path = API_HOST.match('sheepda') && 'pm' || 'poc';
+    const path = (API_HOST.match('sheepda') && 'pm') || 'poc';
 
     fetch(`${API_HOST}/${path}`)
       .then(response => response.json())
