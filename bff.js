@@ -46,6 +46,68 @@ function findUpward(dom, className, loops) {
   return found;
 }
 
+function getSections(document) {
+  const sections = [];
+
+  [...document.querySelectorAll('main section')].forEach((section, index) => {
+    const sectionData = {index, link: [], media: []};
+    const sectionText = section.textContent;
+
+    [...section.querySelectorAll('a')].forEach(link => {
+      const href = link.href;
+
+      sectionData.link.push({
+        title: link.textContent,
+        url: href.indexOf('http') === -1 && `${host}${href}` || href
+      });
+    });
+
+
+    const mediaHash = {};
+    [...section.querySelectorAll('img')].forEach(img => {
+      const src = img.outerHTML.split('src="').pop().split('"').shift();
+
+      mediaHash[src] = {
+        title: img.alt,
+        url: src.indexOf('http') === -1 && `${host}${src}` || src
+      }
+    });
+    Object.keys(mediaHash).forEach(key => {
+      sectionData.media.push(mediaHash[key]);
+    });
+
+    [...section.querySelectorAll('p')].forEach(p => {
+      [...p.parentNode.querySelectorAll('p')].forEach(p => {
+        if (!sectionData.body) {
+          sectionData.body = [];
+        }
+
+        sectionData.body.push(p.textContent);
+      });
+    });
+
+    // const headDOM = document.createElement('b'); headDOM.innerHTML = containerHtm.split('<p').shift();
+
+    // if (!Array.isArray(sectionData.body)) {
+    //   sectionData.body = [sectionData.body];
+    // }
+
+    const title =
+      sectionData.body && sectionData.body.length === 1
+        && sectionText.split(sectionData.body[0]).shift() ||
+      sectionData.link && sectionData.link.length === 1
+        && sectionText.split(sectionData.link[0].title).shift();
+
+    if (title) {
+      sectionData.title = title;
+    }
+
+    sections.push(sectionData);
+  });
+
+  return sections;
+}
+
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   next();
@@ -54,6 +116,20 @@ app.use((req, res, next) => {
 app.set('json spaces', 2);
 
 app.use('/', express.static(path.join(__dirname, '..', 'dist')));
+
+app.get('/pm/products', (req, res) => {
+  fetch(`${host}/products`)
+    .then(
+      (r) => {
+        r.text()
+          .then(data => {
+            const { document } = (new JSDOM(data)).window;
+
+            res.json([...getSections(document)]);
+          });
+      }
+    );
+});
 
 app.get('/pm_g', (req, res) => {
   fetch(host)
