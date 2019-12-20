@@ -3,6 +3,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const path = require('path');
 const jsdom = require('jsdom');
+const scrape = require('./src/spatula');
 const { JSDOM } = jsdom;
 
 const app = express();
@@ -46,6 +47,8 @@ function findUpward(dom, className, loops) {
   return found;
 }
 
+app.set('etag', false);
+
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   next();
@@ -54,6 +57,31 @@ app.use((req, res, next) => {
 app.set('json spaces', 2);
 
 app.use('/', express.static(path.join(__dirname, '..', 'dist')));
+
+app.get('/pm/*', (req, res) => {
+  const url = `${host}/${req.params[0]}`;
+
+  fetch(url)
+    .then(
+      (r) => {
+        r.text()
+          .then(data => {
+            const { document } = (new JSDOM(data)).window;
+
+            const items = scrape.spatula(document);
+
+            items.unshift({
+              type: 'meta',
+              url,
+              title: document.querySelector('title').textContent,
+              generator: 'algo'
+            });
+
+            res.json(items);
+          });
+      }
+    );
+});
 
 app.get('/pm_g', (req, res) => {
   fetch(host)
@@ -213,6 +241,7 @@ app.get('/pm', (req, res) => {
                 type: 'meta',
                 url: '/',
                 title: document.querySelector('title').textContent,
+                generator: 'curated'
               };
             };
 
