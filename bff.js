@@ -4,6 +4,7 @@ const fetch = require('node-fetch');
 const path = require('path');
 const jsdom = require('jsdom');
 const scrape = require('./src/spatula');
+const fs = require('fs');
 const { JSDOM } = jsdom;
 
 const app = express();
@@ -46,8 +47,6 @@ function findUpward(dom, className, loops) {
 
   return found;
 }
-
-app.set('etag', false);
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -202,6 +201,9 @@ app.get('/pm_g', (req, res) => {
 });
 
 app.get('/pm', (req, res) => {
+  const eventPath = path.join(__dirname, 'content', 'event.json');
+  const eventData = fs.existsSync(eventPath) && require(eventPath) || null;
+
   fetch(host)
     .then(
       (r) => {
@@ -462,7 +464,7 @@ app.get('/pm', (req, res) => {
               ...getCards(),
               getNetwork(),
               getCommunity(),
-              getEvents()
+              eventData || getEvents()
             ]);
           });
       }
