@@ -57,6 +57,13 @@ app.set('json spaces', 2);
 
 app.use('/', express.static(path.join(__dirname, '..', 'dist')));
 
+app.get('/pm/message-bar', (req, res) => {
+  const messageBarPath = path.join(__dirname, 'content', 'message-bar.json');
+  const messageBarData = fs.existsSync(messageBarPath) && require(messageBarPath) || null;
+
+  res.json([messageBarData]);
+});
+
 app.get('/pm/*', (req, res) => {
   const url = `${host}/${req.params[0]}`;
 
@@ -83,6 +90,9 @@ app.get('/pm/*', (req, res) => {
 });
 
 app.get('/pm_g', (req, res) => {
+  const messageBarPath = path.join(__dirname, 'content', 'message-bar.json');
+  const messageBarData = fs.existsSync(messageBarPath) && require(messageBarPath) || null;
+
   fetch(host)
     .then(
       (r) => {
@@ -194,7 +204,7 @@ app.get('/pm_g', (req, res) => {
               return footer;
             }
 
-            res.json([getHeader(), getFooter()]);
+            res.json([messageBarData, getHeader(), getFooter()]);
           });
       }
     );
